@@ -3,19 +3,57 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SevsuFacilityStorage.Migrations
 {
-    public partial class Initialized : Migration
+    public partial class Second_Version : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "PremiasesDescriptions",
+                name: "ElectricitySupply",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsStandartSocket = table.Column<bool>(type: "bit", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    IsDeEnergizingDevice = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ElectricitySupply", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PremisesDescriptions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PremiasesDescriptions", x => x.Id);
+                    table.PrimaryKey("PK_PremisesDescriptions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NetworkCharacteristics",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsRJ45Socket = table.Column<bool>(type: "bit", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    SocketsOccupied = table.Column<int>(type: "int", nullable: false),
+                    IsLVC = table.Column<bool>(type: "bit", nullable: false),
+                    IsFHDNetwork = table.Column<bool>(type: "bit", nullable: false),
+                    IsInternerAccess = table.Column<bool>(type: "bit", nullable: false),
+                    ElectricitySupplyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NetworkCharacteristics", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NetworkCharacteristics_ElectricitySupply_ElectricitySupplyId",
+                        column: x => x.ElectricitySupplyId,
+                        principalTable: "ElectricitySupply",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -25,15 +63,15 @@ namespace SevsuFacilityStorage.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Availability = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AvailabilityCharacteristics = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PremiasesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PremisesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AccessibilityForPersonsWithDisabilities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AccessibilityForPersonsWithDisabilities_PremiasesDescriptions_PremiasesDescriptionId",
-                        column: x => x.PremiasesDescriptionId,
-                        principalTable: "PremiasesDescriptions",
+                        name: "FK_AccessibilityForPersonsWithDisabilities_PremisesDescriptions_PremisesDescriptionId",
+                        column: x => x.PremisesDescriptionId,
+                        principalTable: "PremisesDescriptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -45,15 +83,15 @@ namespace SevsuFacilityStorage.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     HasAutomaticNotificationSystem = table.Column<bool>(type: "bit", nullable: false),
                     HasSecurityAlarmSystem = table.Column<bool>(type: "bit", nullable: false),
-                    PremiasesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PremisesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EnsuringSecurities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EnsuringSecurities_PremiasesDescriptions_PremiasesDescriptionId",
-                        column: x => x.PremiasesDescriptionId,
-                        principalTable: "PremiasesDescriptions",
+                        name: "FK_EnsuringSecurities_PremisesDescriptions_PremisesDescriptionId",
+                        column: x => x.PremisesDescriptionId,
+                        principalTable: "PremisesDescriptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -68,15 +106,15 @@ namespace SevsuFacilityStorage.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InventoryNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PremiasesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PremisesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Equipment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Equipment_PremiasesDescriptions_PremiasesDescriptionId",
-                        column: x => x.PremiasesDescriptionId,
-                        principalTable: "PremiasesDescriptions",
+                        name: "FK_Equipment_PremisesDescriptions_PremisesDescriptionId",
+                        column: x => x.PremisesDescriptionId,
+                        principalTable: "PremisesDescriptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -87,17 +125,25 @@ namespace SevsuFacilityStorage.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Area = table.Column<double>(type: "float", nullable: false),
+                    Height = table.Column<double>(type: "float", nullable: false),
                     WallCovering = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FloorCovering = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PremiasesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ElectricitySupplyId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    PremisesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GeneralInformation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GeneralInformation_PremiasesDescriptions_PremiasesDescriptionId",
-                        column: x => x.PremiasesDescriptionId,
-                        principalTable: "PremiasesDescriptions",
+                        name: "FK_GeneralInformation_ElectricitySupply_ElectricitySupplyId",
+                        column: x => x.ElectricitySupplyId,
+                        principalTable: "ElectricitySupply",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_GeneralInformation_PremisesDescriptions_PremisesDescriptionId",
+                        column: x => x.PremisesDescriptionId,
+                        principalTable: "PremisesDescriptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -110,15 +156,15 @@ namespace SevsuFacilityStorage.Migrations
                     UnderRepair = table.Column<bool>(type: "bit", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PlannedEndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PremiasesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PremisesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RepairStatuses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RepairStatuses_PremiasesDescriptions_PremiasesDescriptionId",
-                        column: x => x.PremiasesDescriptionId,
-                        principalTable: "PremiasesDescriptions",
+                        name: "FK_RepairStatuses_PremisesDescriptions_PremisesDescriptionId",
+                        column: x => x.PremisesDescriptionId,
+                        principalTable: "PremisesDescriptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -130,15 +176,15 @@ namespace SevsuFacilityStorage.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Division = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Basis = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PremiasesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PremisesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ResponsibilityForPremises", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ResponsibilityForPremises_PremiasesDescriptions_PremiasesDescriptionId",
-                        column: x => x.PremiasesDescriptionId,
-                        principalTable: "PremiasesDescriptions",
+                        name: "FK_ResponsibilityForPremises_PremisesDescriptions_PremisesDescriptionId",
+                        column: x => x.PremisesDescriptionId,
+                        principalTable: "PremisesDescriptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -152,15 +198,15 @@ namespace SevsuFacilityStorage.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LicenseType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CharacteristicsOfPurchaseAgreement = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PremiasesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PremisesDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Softwares", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Softwares_PremiasesDescriptions_PremiasesDescriptionId",
-                        column: x => x.PremiasesDescriptionId,
-                        principalTable: "PremiasesDescriptions",
+                        name: "FK_Softwares_PremisesDescriptions_PremisesDescriptionId",
+                        column: x => x.PremisesDescriptionId,
+                        principalTable: "PremisesDescriptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -299,9 +345,9 @@ namespace SevsuFacilityStorage.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AccessibilityForPersonsWithDisabilities_PremiasesDescriptionId",
+                name: "IX_AccessibilityForPersonsWithDisabilities_PremisesDescriptionId",
                 table: "AccessibilityForPersonsWithDisabilities",
-                column: "PremiasesDescriptionId",
+                column: "PremisesDescriptionId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -310,15 +356,15 @@ namespace SevsuFacilityStorage.Migrations
                 column: "GeneralInformationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EnsuringSecurities_PremiasesDescriptionId",
+                name: "IX_EnsuringSecurities_PremisesDescriptionId",
                 table: "EnsuringSecurities",
-                column: "PremiasesDescriptionId",
+                column: "PremisesDescriptionId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Equipment_PremiasesDescriptionId",
+                name: "IX_Equipment_PremisesDescriptionId",
                 table: "Equipment",
-                column: "PremiasesDescriptionId",
+                column: "PremisesDescriptionId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -327,9 +373,14 @@ namespace SevsuFacilityStorage.Migrations
                 column: "EnsuringSecurityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GeneralInformation_PremiasesDescriptionId",
+                name: "IX_GeneralInformation_ElectricitySupplyId",
                 table: "GeneralInformation",
-                column: "PremiasesDescriptionId",
+                column: "ElectricitySupplyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GeneralInformation_PremisesDescriptionId",
+                table: "GeneralInformation",
+                column: "PremisesDescriptionId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -343,6 +394,12 @@ namespace SevsuFacilityStorage.Migrations
                 column: "GeneralInformationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_NetworkCharacteristics_ElectricitySupplyId",
+                table: "NetworkCharacteristics",
+                column: "ElectricitySupplyId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_People_RepairStatusId",
                 table: "People",
                 column: "RepairStatusId",
@@ -354,21 +411,21 @@ namespace SevsuFacilityStorage.Migrations
                 column: "ResponsibilityForPremisesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RepairStatuses_PremiasesDescriptionId",
+                name: "IX_RepairStatuses_PremisesDescriptionId",
                 table: "RepairStatuses",
-                column: "PremiasesDescriptionId",
+                column: "PremisesDescriptionId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ResponsibilityForPremises_PremiasesDescriptionId",
+                name: "IX_ResponsibilityForPremises_PremisesDescriptionId",
                 table: "ResponsibilityForPremises",
-                column: "PremiasesDescriptionId",
+                column: "PremisesDescriptionId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Softwares_PremiasesDescriptionId",
+                name: "IX_Softwares_PremisesDescriptionId",
                 table: "Softwares",
-                column: "PremiasesDescriptionId",
+                column: "PremisesDescriptionId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -398,6 +455,9 @@ namespace SevsuFacilityStorage.Migrations
                 name: "LightingDevices");
 
             migrationBuilder.DropTable(
+                name: "NetworkCharacteristics");
+
+            migrationBuilder.DropTable(
                 name: "People");
 
             migrationBuilder.DropTable(
@@ -419,7 +479,10 @@ namespace SevsuFacilityStorage.Migrations
                 name: "GeneralInformation");
 
             migrationBuilder.DropTable(
-                name: "PremiasesDescriptions");
+                name: "ElectricitySupply");
+
+            migrationBuilder.DropTable(
+                name: "PremisesDescriptions");
         }
     }
 }

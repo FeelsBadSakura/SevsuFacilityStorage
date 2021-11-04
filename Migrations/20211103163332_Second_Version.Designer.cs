@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SevsuFacilityStorage.Data;
 
 namespace SevsuFacilityStorage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211103163332_Second_Version")]
+    partial class Second_Version
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -319,18 +321,6 @@ namespace SevsuFacilityStorage.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Adress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateOfCurrentInformation")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("InnerNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NumberByBTI")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

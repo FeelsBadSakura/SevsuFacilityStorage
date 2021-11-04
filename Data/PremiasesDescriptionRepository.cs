@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SevsuFacilityStorage.Abstractions;
 using SevsuFacilityStorage.Models;
+using SevsuFacilityStorage.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SevsuFacilityStorage.Data
 {
-    public class PremiasesDescriptionRepository: IPremiasesDescriptionRepository
+    public class PremiasesDescriptionRepository: IPremisesDescriptionRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -17,26 +18,26 @@ namespace SevsuFacilityStorage.Data
             _context = context;
         }
 
-        public void CreateRecord(PremiasesDescription premiasesDescription)
+        public void CreateRecord(PremisesDescription premiasesDescription)
         {
             _context.Add(premiasesDescription);
             _context.SaveChanges();
         }
 
-        public IEnumerable<PremiasesDescription> GetAllDescriptions()
+        public IEnumerable<PremisesDescription> GetAllDescriptions()
         {
-            return _context.PremiasesDescriptions
+            return _context.PremisesDescriptions
                 .Include(PremiasesDescription => PremiasesDescription.AccessibilityForPersonsWithDisabilities)
                 .Include(PremiasesDescription => PremiasesDescription.EnsuringSecurity)
                 .Include(PremiasesDescription => PremiasesDescription.Equipment)
                 .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
-                    .ThenInclude(GeneralInformation => GeneralInformation.heatings)
+                    .ThenInclude(GeneralInformation => GeneralInformation.Heatings)
                 .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
-                    .ThenInclude(GeneralInformation => GeneralInformation.lightingDevices)
+                    .ThenInclude(GeneralInformation => GeneralInformation.LightingDevices)
                 .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
-                    .ThenInclude(GeneralInformation => GeneralInformation.doors)
+                    .ThenInclude(GeneralInformation => GeneralInformation.Doors)
                 .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
-                    .ThenInclude(GeneralInformation => GeneralInformation.windows)
+                    .ThenInclude(GeneralInformation => GeneralInformation.Windows)
                 .Include(PremiasesDescription => PremiasesDescription.RepairStatus)
                     .ThenInclude(RepairStatus => RepairStatus.Person)
                 .Include(PremiasesDescription => PremiasesDescription.Software)
@@ -45,5 +46,32 @@ namespace SevsuFacilityStorage.Data
                 .ToList();
         }
 
+        public PremisesDescription GetDescriptionByNumber(string number)
+        {
+            return _context.PremisesDescriptions
+                .Include(PremiasesDescription => PremiasesDescription.AccessibilityForPersonsWithDisabilities)
+                .Include(PremiasesDescription => PremiasesDescription.EnsuringSecurity)
+                .Include(PremiasesDescription => PremiasesDescription.Equipment)
+                .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
+                    .ThenInclude(GeneralInformation => GeneralInformation.Heatings)
+                .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
+                    .ThenInclude(GeneralInformation => GeneralInformation.LightingDevices)
+                .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
+                    .ThenInclude(GeneralInformation => GeneralInformation.Doors)
+                .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
+                    .ThenInclude(GeneralInformation => GeneralInformation.Windows)
+                .Include(PremiasesDescription => PremiasesDescription.RepairStatus)
+                    .ThenInclude(RepairStatus => RepairStatus.Person)
+                .Include(PremiasesDescription => PremiasesDescription.Software)
+                .Include(PremiasesDescription => PremiasesDescription.ResponsibilityForPremises)
+                    .ThenInclude(ResponsibilityForPremises => ResponsibilityForPremises.ResponsiblePersons)
+                .FirstOrDefault(model => model.InnerNumber == number);
+        }
+
+        public IEnumerable<PremisesDescription> GetMainInformation()
+        {
+            return _context.PremisesDescriptions
+                .ToList();
+        }
     }
 }

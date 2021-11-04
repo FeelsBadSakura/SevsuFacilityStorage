@@ -18,8 +18,8 @@ namespace SevsuFacilityStorage.Models
         public string CharacteristicsOfPurchaseAgreement { get; set; }
 
 
-        public Guid PremiasesDescriptionId { get; set; }
-        public PremiasesDescription PremiasesDescription { get; set; }
+        public Guid PremisesDescriptionId { get; set; }
+        public PremisesDescription PremisesDescription { get; set; }
 
     }
 }

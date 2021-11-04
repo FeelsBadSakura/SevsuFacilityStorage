@@ -1,0 +1,21 @@
+﻿using SevsuFacilityStorage.Models;
+using SevsuFacilityStorage.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace SevsuFacilityStorage.Abstractions
+{
+    public interface IPremisesDescriptionRepository
+    {
+        public void CreateRecord(PremisesDescription premisesDescription);
+
+        public IEnumerable<PremisesDescription> GetAllDescriptions();
+
+        public IEnumerable<PremisesDescription> GetMainInformation();
+
+        public PremisesDescription GetDescriptionByNumber(string number);
+
+    }
+}

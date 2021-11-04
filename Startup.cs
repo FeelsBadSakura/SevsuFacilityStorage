@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using SevsuFacilityStorage.Abstractions;
 using SevsuFacilityStorage.Data;
+using SevsuFacilityStorage.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,8 +33,12 @@ namespace SevsuFacilityStorage
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
+            
+            services.AddScoped<MainService>();
 
-            services.AddScoped<IPremiasesDescriptionRepository, PremiasesDescriptionRepository>();
+            services.AddScoped<IPremisesDescriptionRepository, PremiasesDescriptionRepository>();
+
+            
 
             services.AddControllersWithViews()
                         .AddJsonOptions(o => o.JsonSerializerOptions
@@ -55,6 +60,10 @@ namespace SevsuFacilityStorage
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SevsuFacilityStorage v1"));
             }
+
+            app.UseDefaultFiles();
+
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
 

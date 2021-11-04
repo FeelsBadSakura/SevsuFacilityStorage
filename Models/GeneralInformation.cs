@@ -11,20 +11,24 @@ namespace SevsuFacilityStorage.Models
 
         public double Area { get; set; }
 
+        public double Height { get; set; }
+
         public string WallCovering { get; set; }
 
         public string FloorCovering { get; set; }
 
-        public ICollection<Windows> windows { get; set; }
+        public ICollection<Windows> Windows { get; set; }
 
-        public ICollection<Door> doors { get; set; }
+        public ICollection<Door> Doors { get; set; }
 
-        public ICollection<LightingDevice> lightingDevices { get; set; }
+        public ICollection<LightingDevice> LightingDevices { get; set; }
 
-        public ICollection<Heating> heatings { get; set; }
+        public ElectricitySupply ElectricitySupply { get; set; }
+
+        public ICollection<Heating> Heatings { get; set; }
 
 
-        public Guid PremiasesDescriptionId { get; set; }
-        public PremiasesDescription PremiasesDescription { get; set; }
+        public Guid PremisesDescriptionId { get; set; }
+        public PremisesDescription PremisesDescription { get; set; }
     }
 }

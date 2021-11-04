@@ -5,9 +5,17 @@ using System.Threading.Tasks;
 
 namespace SevsuFacilityStorage.Models
 {
-    public class PremiasesDescription
+    public class PremisesDescription
     {
         public Guid Id { get; set; }
+
+        public string InnerNumber { set; get; }
+
+        public string NumberByBTI { get; set; }
+
+        public DateTime DateOfCurrentInformation { get; set; }
+
+        public string Adress { get; set; }
 
         public AccessibilityForPersonsWithDisabilities AccessibilityForPersonsWithDisabilities { get; set; }
 

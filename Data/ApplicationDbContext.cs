@@ -20,6 +20,8 @@ namespace SevsuFacilityStorage.Data
 
         public DbSet<Door> Doors { get; set; }
 
+        public DbSet<ElectricitySupply> ElectricitySupply { get; set; }
+
         public DbSet<EnsuringSecurity> EnsuringSecurities { get; set; }
 
         public DbSet<Equipment> Equipment { get; set; }
@@ -31,9 +33,11 @@ namespace SevsuFacilityStorage.Data
 
         public DbSet<LightingDevice> LightingDevices { get; set; }
 
+        public DbSet<NetworkCharacteristics> NetworkCharacteristics { get; set; }
+
         public DbSet<Person> People { get; set; }
 
-        public DbSet<PremiasesDescription> PremiasesDescriptions { get; set; }
+        public DbSet<PremisesDescription> PremisesDescriptions { get; set; }
 
         public DbSet<RepairStatus> RepairStatuses { get; set; }
 

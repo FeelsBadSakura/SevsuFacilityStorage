@@ -10,8 +10,8 @@ using SevsuFacilityStorage.Data;
 namespace SevsuFacilityStorage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211029185832_Initialized")]
-    partial class Initialized
+    [Migration("20211103170737_Second_Version_v2")]
+    partial class Second_Version_v2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,12 +33,12 @@ namespace SevsuFacilityStorage.Migrations
                     b.Property<string>("AvailabilityCharacteristics")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PremiasesDescriptionId")
+                    b.Property<Guid>("PremisesDescriptionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PremiasesDescriptionId")
+                    b.HasIndex("PremisesDescriptionId")
                         .IsUnique();
 
                     b.ToTable("AccessibilityForPersonsWithDisabilities");
@@ -69,6 +69,26 @@ namespace SevsuFacilityStorage.Migrations
                     b.ToTable("Doors");
                 });
 
+            modelBuilder.Entity("SevsuFacilityStorage.Models.ElectricitySupply", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeEnergizingDevice")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsStandartSocket")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ElectricitySupply");
+                });
+
             modelBuilder.Entity("SevsuFacilityStorage.Models.EnsuringSecurity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -81,12 +101,12 @@ namespace SevsuFacilityStorage.Migrations
                     b.Property<bool>("HasSecurityAlarmSystem")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("PremiasesDescriptionId")
+                    b.Property<Guid>("PremisesDescriptionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PremiasesDescriptionId")
+                    b.HasIndex("PremisesDescriptionId")
                         .IsUnique();
 
                     b.ToTable("EnsuringSecurities");
@@ -107,7 +127,7 @@ namespace SevsuFacilityStorage.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PremiasesDescriptionId")
+                    b.Property<Guid>("PremisesDescriptionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
@@ -118,7 +138,7 @@ namespace SevsuFacilityStorage.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PremiasesDescriptionId")
+                    b.HasIndex("PremisesDescriptionId")
                         .IsUnique();
 
                     b.ToTable("Equipment");
@@ -155,10 +175,16 @@ namespace SevsuFacilityStorage.Migrations
                     b.Property<double>("Area")
                         .HasColumnType("float");
 
+                    b.Property<Guid?>("ElectricitySupplyId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("FloorCovering")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PremiasesDescriptionId")
+                    b.Property<double>("Height")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("PremisesDescriptionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("WallCovering")
@@ -166,7 +192,9 @@ namespace SevsuFacilityStorage.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PremiasesDescriptionId")
+                    b.HasIndex("ElectricitySupplyId");
+
+                    b.HasIndex("PremisesDescriptionId")
                         .IsUnique();
 
                     b.ToTable("GeneralInformation");
@@ -216,6 +244,41 @@ namespace SevsuFacilityStorage.Migrations
                     b.ToTable("LightingDevices");
                 });
 
+            modelBuilder.Entity("SevsuFacilityStorage.Models.NetworkCharacteristics", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ElectricitySupplyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsFHDNetwork")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsInternerAccess")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsLVC")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRJ45Socket")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SocketsOccupied")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ElectricitySupplyId")
+                        .IsUnique();
+
+                    b.ToTable("NetworkCharacteristics");
+                });
+
             modelBuilder.Entity("SevsuFacilityStorage.Models.Person", b =>
                 {
                     b.Property<Guid>("Id")
@@ -253,15 +316,27 @@ namespace SevsuFacilityStorage.Migrations
                     b.ToTable("People");
                 });
 
-            modelBuilder.Entity("SevsuFacilityStorage.Models.PremiasesDescription", b =>
+            modelBuilder.Entity("SevsuFacilityStorage.Models.PremisesDescription", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Adress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfCurrentInformation")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InnerNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumberByBTI")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("PremiasesDescriptions");
+                    b.ToTable("PremisesDescriptions");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.RepairStatus", b =>
@@ -273,7 +348,7 @@ namespace SevsuFacilityStorage.Migrations
                     b.Property<DateTime>("PlannedEndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("PremiasesDescriptionId")
+                    b.Property<Guid>("PremisesDescriptionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("StartDate")
@@ -284,7 +359,7 @@ namespace SevsuFacilityStorage.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PremiasesDescriptionId")
+                    b.HasIndex("PremisesDescriptionId")
                         .IsUnique();
 
                     b.ToTable("RepairStatuses");
@@ -302,12 +377,12 @@ namespace SevsuFacilityStorage.Migrations
                     b.Property<string>("Division")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PremiasesDescriptionId")
+                    b.Property<Guid>("PremisesDescriptionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PremiasesDescriptionId")
+                    b.HasIndex("PremisesDescriptionId")
                         .IsUnique();
 
                     b.ToTable("ResponsibilityForPremises");
@@ -331,12 +406,12 @@ namespace SevsuFacilityStorage.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PremiasesDescriptionId")
+                    b.Property<Guid>("PremisesDescriptionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PremiasesDescriptionId")
+                    b.HasIndex("PremisesDescriptionId")
                         .IsUnique();
 
                     b.ToTable("Softwares");
@@ -375,42 +450,42 @@ namespace SevsuFacilityStorage.Migrations
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.AccessibilityForPersonsWithDisabilities", b =>
                 {
-                    b.HasOne("SevsuFacilityStorage.Models.PremiasesDescription", "PremiasesDescription")
+                    b.HasOne("SevsuFacilityStorage.Models.PremisesDescription", "PremisesDescription")
                         .WithOne("AccessibilityForPersonsWithDisabilities")
-                        .HasForeignKey("SevsuFacilityStorage.Models.AccessibilityForPersonsWithDisabilities", "PremiasesDescriptionId")
+                        .HasForeignKey("SevsuFacilityStorage.Models.AccessibilityForPersonsWithDisabilities", "PremisesDescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("PremiasesDescription");
+                    b.Navigation("PremisesDescription");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.Door", b =>
                 {
                     b.HasOne("SevsuFacilityStorage.Models.GeneralInformation", null)
-                        .WithMany("doors")
+                        .WithMany("Doors")
                         .HasForeignKey("GeneralInformationId");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.EnsuringSecurity", b =>
                 {
-                    b.HasOne("SevsuFacilityStorage.Models.PremiasesDescription", "PremiasesDescription")
+                    b.HasOne("SevsuFacilityStorage.Models.PremisesDescription", "PremisesDescription")
                         .WithOne("EnsuringSecurity")
-                        .HasForeignKey("SevsuFacilityStorage.Models.EnsuringSecurity", "PremiasesDescriptionId")
+                        .HasForeignKey("SevsuFacilityStorage.Models.EnsuringSecurity", "PremisesDescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("PremiasesDescription");
+                    b.Navigation("PremisesDescription");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.Equipment", b =>
                 {
-                    b.HasOne("SevsuFacilityStorage.Models.PremiasesDescription", "PremiasesDescription")
+                    b.HasOne("SevsuFacilityStorage.Models.PremisesDescription", "PremisesDescription")
                         .WithOne("Equipment")
-                        .HasForeignKey("SevsuFacilityStorage.Models.Equipment", "PremiasesDescriptionId")
+                        .HasForeignKey("SevsuFacilityStorage.Models.Equipment", "PremisesDescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("PremiasesDescription");
+                    b.Navigation("PremisesDescription");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.FireExtinguisher", b =>
@@ -426,27 +501,44 @@ namespace SevsuFacilityStorage.Migrations
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.GeneralInformation", b =>
                 {
-                    b.HasOne("SevsuFacilityStorage.Models.PremiasesDescription", "PremiasesDescription")
+                    b.HasOne("SevsuFacilityStorage.Models.ElectricitySupply", "ElectricitySupply")
+                        .WithMany()
+                        .HasForeignKey("ElectricitySupplyId");
+
+                    b.HasOne("SevsuFacilityStorage.Models.PremisesDescription", "PremisesDescription")
                         .WithOne("GeneralInformation")
-                        .HasForeignKey("SevsuFacilityStorage.Models.GeneralInformation", "PremiasesDescriptionId")
+                        .HasForeignKey("SevsuFacilityStorage.Models.GeneralInformation", "PremisesDescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("PremiasesDescription");
+                    b.Navigation("ElectricitySupply");
+
+                    b.Navigation("PremisesDescription");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.Heating", b =>
                 {
                     b.HasOne("SevsuFacilityStorage.Models.GeneralInformation", null)
-                        .WithMany("heatings")
+                        .WithMany("Heatings")
                         .HasForeignKey("GeneralInformationId");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.LightingDevice", b =>
                 {
                     b.HasOne("SevsuFacilityStorage.Models.GeneralInformation", null)
-                        .WithMany("lightingDevices")
+                        .WithMany("LightingDevices")
                         .HasForeignKey("GeneralInformationId");
+                });
+
+            modelBuilder.Entity("SevsuFacilityStorage.Models.NetworkCharacteristics", b =>
+                {
+                    b.HasOne("SevsuFacilityStorage.Models.ElectricitySupply", "ElectricitySupply")
+                        .WithOne("NetworkCharacteristics")
+                        .HasForeignKey("SevsuFacilityStorage.Models.NetworkCharacteristics", "ElectricitySupplyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ElectricitySupply");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.Person", b =>
@@ -470,42 +562,47 @@ namespace SevsuFacilityStorage.Migrations
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.RepairStatus", b =>
                 {
-                    b.HasOne("SevsuFacilityStorage.Models.PremiasesDescription", "PremiasesDescription")
+                    b.HasOne("SevsuFacilityStorage.Models.PremisesDescription", "PremisesDescription")
                         .WithOne("RepairStatus")
-                        .HasForeignKey("SevsuFacilityStorage.Models.RepairStatus", "PremiasesDescriptionId")
+                        .HasForeignKey("SevsuFacilityStorage.Models.RepairStatus", "PremisesDescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("PremiasesDescription");
+                    b.Navigation("PremisesDescription");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.ResponsibilityForPremises", b =>
                 {
-                    b.HasOne("SevsuFacilityStorage.Models.PremiasesDescription", "PremiasesDescription")
+                    b.HasOne("SevsuFacilityStorage.Models.PremisesDescription", "PremisesDescription")
                         .WithOne("ResponsibilityForPremises")
-                        .HasForeignKey("SevsuFacilityStorage.Models.ResponsibilityForPremises", "PremiasesDescriptionId")
+                        .HasForeignKey("SevsuFacilityStorage.Models.ResponsibilityForPremises", "PremisesDescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("PremiasesDescription");
+                    b.Navigation("PremisesDescription");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.Software", b =>
                 {
-                    b.HasOne("SevsuFacilityStorage.Models.PremiasesDescription", "PremiasesDescription")
+                    b.HasOne("SevsuFacilityStorage.Models.PremisesDescription", "PremisesDescription")
                         .WithOne("Software")
-                        .HasForeignKey("SevsuFacilityStorage.Models.Software", "PremiasesDescriptionId")
+                        .HasForeignKey("SevsuFacilityStorage.Models.Software", "PremisesDescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("PremiasesDescription");
+                    b.Navigation("PremisesDescription");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.Windows", b =>
                 {
                     b.HasOne("SevsuFacilityStorage.Models.GeneralInformation", null)
-                        .WithMany("windows")
+                        .WithMany("Windows")
                         .HasForeignKey("GeneralInformationId");
+                });
+
+            modelBuilder.Entity("SevsuFacilityStorage.Models.ElectricitySupply", b =>
+                {
+                    b.Navigation("NetworkCharacteristics");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.EnsuringSecurity", b =>
@@ -515,16 +612,16 @@ namespace SevsuFacilityStorage.Migrations
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.GeneralInformation", b =>
                 {
-                    b.Navigation("doors");
+                    b.Navigation("Doors");
 
-                    b.Navigation("heatings");
+                    b.Navigation("Heatings");
 
-                    b.Navigation("lightingDevices");
+                    b.Navigation("LightingDevices");
 
-                    b.Navigation("windows");
+                    b.Navigation("Windows");
                 });
 
-            modelBuilder.Entity("SevsuFacilityStorage.Models.PremiasesDescription", b =>
+            modelBuilder.Entity("SevsuFacilityStorage.Models.PremisesDescription", b =>
                 {
                     b.Navigation("AccessibilityForPersonsWithDisabilities");
 
