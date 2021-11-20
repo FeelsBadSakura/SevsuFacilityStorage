@@ -24,6 +24,19 @@ namespace SevsuFacilityStorage.Data
             _context.SaveChanges();
         }
 
+        public void DeleteRecord(string number)
+        {
+            _context.PremisesDescriptions.Remove(
+                _context.PremisesDescriptions.FirstOrDefault(PremisesDescription => PremisesDescription.InnerNumber == number));
+            _context.SaveChanges();
+        }
+
+        public void EditRecord(PremisesDescription premisesDescription)
+        {
+            _context.PremisesDescriptions.Update(premisesDescription);
+            _context.SaveChanges();
+        }
+
         public IEnumerable<PremisesDescription> GetAllDescriptions()
         {
             return _context.PremisesDescriptions
@@ -73,5 +86,6 @@ namespace SevsuFacilityStorage.Data
             return _context.PremisesDescriptions
                 .ToList();
         }
+
     }
 }

@@ -11,7 +11,7 @@ namespace SevsuFacilityStorage.ViewModels
 
         public string NumberByBTI { get; set; }
 
-        //public DateTime DateOfCurrentInformation { get; set; }
+        public DateTime DateOfCurrentInformation { get; set; }
 
         public string Adress { get; set; }
     }

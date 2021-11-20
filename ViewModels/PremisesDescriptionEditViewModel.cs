@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace SevsuFacilityStorage.ViewModels
 {
-    public class PremisesDescriptionViewModel
+    public class PremisesDescriptionEditViewModel
     {
+        public Guid Id { get; set; }
         public string InnerNumber { set; get; }
 
         public string NumberByBTI { get; set; }
@@ -18,6 +19,7 @@ namespace SevsuFacilityStorage.ViewModels
         public string Division { get; set; }
 
         public string Basis { get; set; }
+
 
 
     }

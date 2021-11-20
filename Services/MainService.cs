@@ -23,10 +23,28 @@ namespace SevsuFacilityStorage.Service
             {
                 InnerNumber = model.InnerNumber,
                 NumberByBTI = model.NumberByBTI,
-               // DateOfCurrentInformation = model.DateOfCurrentInformation,
+                DateOfCurrentInformation = model.DateOfCurrentInformation,
                 Adress = model.Adress
             };
             _premisesDescriptionRepository.CreateRecord(premisesDescription);
+        }
+
+        public void DeleteDescription(string number)
+        {
+            _premisesDescriptionRepository.DeleteRecord(number);
+        }
+
+        public void EditDescription(PremisesDescriptionEditViewModel model)
+        {
+            PremisesDescription premisesDescription = new PremisesDescription
+            {
+                Id = model.Id,
+                InnerNumber = model.InnerNumber,
+                NumberByBTI = model.NumberByBTI,
+                DateOfCurrentInformation = model.DateOfCurrentInformation,
+                Adress = model.Adress
+            };
+            _premisesDescriptionRepository.EditRecord(premisesDescription);
         }
 
         public IEnumerable<PremisesDescriptionMainViewModel> GetMainInformation()
@@ -37,9 +55,14 @@ namespace SevsuFacilityStorage.Service
                     InnerNumber = information.InnerNumber,
                     NumberByBTI = information.NumberByBTI,
                     Adress = information.Adress,
-                    //DateOfCurrentInformation = information.DateOfCurrentInformation
+                    DateOfCurrentInformation = information.DateOfCurrentInformation
                 });
+        }
 
+        public IEnumerable<PremisesDescriptionMainViewModel> FilteringMainInformation(
+            IEnumerable<PremisesDescriptionMainViewModel> toFilter, DateTime data)
+        {
+            return toFilter.Where(record => record.DateOfCurrentInformation == data);
         }
 
 
@@ -52,11 +75,26 @@ namespace SevsuFacilityStorage.Service
                 InnerNumber = premisesDescription.InnerNumber,
                 NumberByBTI = premisesDescription.NumberByBTI,
                 Adress = premisesDescription.Adress,
-                //DateOfCurrentInformation = premisesDescription.DateOfCurrentInformation
+                DateOfCurrentInformation = premisesDescription.DateOfCurrentInformation
             };
 
         }
 
-       
+        
+        public PremisesDescriptionEditViewModel GetEditDescriptionByNumber(string number)
+        {
+            var premisesDescription = _premisesDescriptionRepository.GetDescriptionByNumber(number);
+
+            return new PremisesDescriptionEditViewModel
+            {
+                Id = premisesDescription.Id,
+                InnerNumber = premisesDescription.InnerNumber,
+                NumberByBTI = premisesDescription.NumberByBTI,
+                Adress = premisesDescription.Adress,
+                DateOfCurrentInformation = premisesDescription.DateOfCurrentInformation
+            };
+
+        }
+
     }
 }

@@ -11,6 +11,10 @@ namespace SevsuFacilityStorage.Abstractions
     {
         public void CreateRecord(PremisesDescription premisesDescription);
 
+        public void DeleteRecord(string number);
+
+        public void EditRecord(PremisesDescription premisesDescription);
+
         public IEnumerable<PremisesDescription> GetAllDescriptions();
 
         public IEnumerable<PremisesDescription> GetMainInformation();
