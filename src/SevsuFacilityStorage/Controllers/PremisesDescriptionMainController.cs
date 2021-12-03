@@ -26,14 +26,14 @@ namespace SevsuFacilityStorage.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IndexViewModel> GetMainInformation(DateTime? data, int page = 1)
+        public ActionResult<IndexViewModel> GetMainInformation(string division, int page = 1)
         {
             int pageSize = 3;
 
             var list = _mainService.GetMainInformation();
-            if (data != null)
+            if (division != null)
             {
-                list = _mainService.FilteringMainInformation(list, (DateTime)data);
+                list = _mainService.FilteringMainInformation(list,division );
             }
             var count = list.Count();
             list = list.Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -41,12 +41,14 @@ namespace SevsuFacilityStorage.Controllers
             IndexViewModel viewModel = new IndexViewModel
             {
                 PageViewModel = new PageViewModel(count, page, pageSize),
-                FilterViewModel = new FilterViewModel(new List<DateTime> { DateTime.UtcNow, list.FirstOrDefault().DateOfCurrentInformation },data),
+                //FilterViewModel = new FilterViewModel(new List<DateTime> { DateTime.UtcNow, list.FirstOrDefault() },data),
                 PremisesDescriptions = list
             };
             
             return viewModel;
         }
+
+
 
     } 
 }

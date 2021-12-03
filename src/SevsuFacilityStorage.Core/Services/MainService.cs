@@ -40,7 +40,6 @@ namespace SevsuFacilityStorage.Service
                 InnerNumber = model.InnerNumber,
                 NumberByBTI = model.NumberByBTI,
                 DateOfCurrentInformation = model.DateOfCurrentInformation,
-                Adress = model.Adress
             };
             _premisesDescriptionRepository.EditRecord(premisesDescription);
         }
@@ -51,16 +50,16 @@ namespace SevsuFacilityStorage.Service
                 .Select(information => new PremisesDescriptionMainViewModel
                 {
                     InnerNumber = information.InnerNumber,
-                    NumberByBTI = information.NumberByBTI,
-                    Adress = information.Adress,
-                    DateOfCurrentInformation = information.DateOfCurrentInformation
+                    Division = information.ResponsibilityForPremises.Division,
+                    Availability = information.AccessibilityForPersonsWithDisabilities.Availability,
+                    UnderRepair = information.RepairStatus.UnderRepair,
                 });
         }
 
         public IEnumerable<PremisesDescriptionMainViewModel> FilteringMainInformation(
-            IEnumerable<PremisesDescriptionMainViewModel> toFilter, DateTime data)
+            IEnumerable<PremisesDescriptionMainViewModel> toFilter, string division)
         {
-            return toFilter.Where(record => record.DateOfCurrentInformation == data);
+            return toFilter.Where(record => record.Division == division);
         }
 
 
@@ -85,7 +84,6 @@ namespace SevsuFacilityStorage.Service
                 Id = premisesDescription.Id,
                 InnerNumber = premisesDescription.InnerNumber,
                 NumberByBTI = premisesDescription.NumberByBTI,
-                Adress = premisesDescription.Adress,
                 DateOfCurrentInformation = premisesDescription.DateOfCurrentInformation
             };
 

@@ -1,22 +1,20 @@
-﻿using System;
+﻿using SevsuFacilityStorage.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace SevsuFacilityStorage.Models
+namespace SevsuFacilityStorage.Core.Models
 {
-    public class Software
+    public class PurposeOfPremises
     {
         public Guid Id { get; set; }
+        public string Type { get; set; }
 
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        public string LicenseType { get; set; }
+        public string Sort { get; set; }
 
         public Guid PremisesDescriptionId { get; set; }
         public PremisesDescription PremisesDescription { get; set; }
-
     }
 }

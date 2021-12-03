@@ -17,6 +17,8 @@ namespace SevsuFacilityStorage.Models
 
         public string Obstacles { get; set; }
 
+        public double Area { get; set; }
+
         public string Grids { get; set; }
     }
 }

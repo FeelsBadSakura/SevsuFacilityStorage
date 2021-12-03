@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SevsuFacilityStorage.Core.Models;
+using SevsuFacilityStorage.Infrastructure.Data.Mapping;
 using SevsuFacilityStorage.Models;
 using System;
 using System.Collections.Generic;
@@ -46,7 +48,9 @@ namespace SevsuFacilityStorage.Data
         public DbSet<ComputerClassDescription> ComputerClasses { get; set; }
         public DbSet<LabClassDescription> LabClasses { get; set; }
 
+        public DbSet<PurposeOfPremises> PurposeOfPremises { get; set; }
 
+        public DbSet<AdditionalCharacteristics> AdditionalCharacteristics { get; set; }
         public DbSet<RepairStatus> RepairStatuses { get; set; }
 
         public DbSet<ResponsibilityForPremises> ResponsibilityForPremises { get; set; }
@@ -58,6 +62,8 @@ namespace SevsuFacilityStorage.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new AdditionalCharacterisicsMap());
+
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<IdentityRole>()
                 .HasData(

@@ -42,7 +42,7 @@ namespace SevsuFacilityStorage.Data
             return _context.PremisesDescriptions
                 .Include(PremiasesDescription => PremiasesDescription.AccessibilityForPersonsWithDisabilities)
                 .Include(PremiasesDescription => PremiasesDescription.EnsuringSecurity)
-                .Include(PremiasesDescription => PremiasesDescription.Equipment)
+                .Include(PremiasesDescription => PremiasesDescription.Equipments)
                 .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
                     .ThenInclude(GeneralInformation => GeneralInformation.Heatings)
                 .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
@@ -53,7 +53,7 @@ namespace SevsuFacilityStorage.Data
                     .ThenInclude(GeneralInformation => GeneralInformation.Windows)
                 .Include(PremiasesDescription => PremiasesDescription.RepairStatus)
                     .ThenInclude(RepairStatus => RepairStatus.Person)
-                .Include(PremiasesDescription => PremiasesDescription.Software)
+                .Include(PremiasesDescription => PremiasesDescription.Softwares)
                 .Include(PremiasesDescription => PremiasesDescription.ResponsibilityForPremises)
                     .ThenInclude(ResponsibilityForPremises => ResponsibilityForPremises.ResponsiblePersons)
                 .ToList();
@@ -64,7 +64,7 @@ namespace SevsuFacilityStorage.Data
             return _context.PremisesDescriptions
                 .Include(PremiasesDescription => PremiasesDescription.AccessibilityForPersonsWithDisabilities)
                 .Include(PremiasesDescription => PremiasesDescription.EnsuringSecurity)
-                .Include(PremiasesDescription => PremiasesDescription.Equipment)
+                .Include(PremiasesDescription => PremiasesDescription.Equipments)
                 .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
                     .ThenInclude(GeneralInformation => GeneralInformation.Heatings)
                 .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
@@ -75,7 +75,7 @@ namespace SevsuFacilityStorage.Data
                     .ThenInclude(GeneralInformation => GeneralInformation.Windows)
                 .Include(PremiasesDescription => PremiasesDescription.RepairStatus)
                     .ThenInclude(RepairStatus => RepairStatus.Person)
-                .Include(PremiasesDescription => PremiasesDescription.Software)
+                .Include(PremiasesDescription => PremiasesDescription.Softwares)
                 .Include(PremiasesDescription => PremiasesDescription.ResponsibilityForPremises)
                     .ThenInclude(ResponsibilityForPremises => ResponsibilityForPremises.ResponsiblePersons)
                 .FirstOrDefault(model => model.InnerNumber == number);

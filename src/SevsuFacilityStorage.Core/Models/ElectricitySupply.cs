@@ -11,10 +11,14 @@ namespace SevsuFacilityStorage.Models
 
         public bool IsStandartSocket { get; set; }
 
-        public int? Quantity { get; set; }
+        public int? StandartSocketQuantity { get; set; }
+
+        public bool IsHighSocket { get; set; }
+
+        public int? HighSocketQuantity { get; set; }
 
         public bool IsDeEnergizingDevice { get; set; }
 
-        public NetworkCharacteristics NetworkCharacteristics { get; set; }
+        
     }
 }

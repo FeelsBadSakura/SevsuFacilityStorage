@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SevsuFacilityStorage.Data;
 
 namespace SevsuFacilityStorage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211203181900_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,26 +50,26 @@ namespace SevsuFacilityStorage.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3615bda8-3970-4796-9e5a-3c5fcb0f2ced",
-                            ConcurrencyStamp = "634bd843-2e24-4abf-bc7d-43e87e05aa69",
+                            Id = "92606046-3afe-4ae6-a893-619bf497e3ed",
+                            ConcurrencyStamp = "6b975d6c-9094-4d79-a517-98d13588f258",
                             Name = "admin"
                         },
                         new
                         {
-                            Id = "1d7dd624-17b5-460f-b79c-0d1b4e8164fe",
-                            ConcurrencyStamp = "b5863e9f-5c41-4ee0-9afb-356500baf613",
+                            Id = "d113e2ee-acb8-4074-8363-c26280383ebc",
+                            ConcurrencyStamp = "625e187b-8e5a-4e85-a449-b50da12b9a6d",
                             Name = "user"
                         },
                         new
                         {
-                            Id = "86b87d04-e91d-4f9d-9041-61107b64e8ec",
-                            ConcurrencyStamp = "a9e2263c-1d3f-455a-a50c-b9a5897e89b3",
+                            Id = "8f1b1998-2cf9-4a00-a473-0f56feec1b3f",
+                            ConcurrencyStamp = "d48ee79c-7eb9-4f52-ab86-38692c23ff0c",
                             Name = "moderator"
                         },
                         new
                         {
-                            Id = "16fe15dd-5040-4d10-abf0-74d94e9c2c02",
-                            ConcurrencyStamp = "c6fcf342-84ed-4d47-bd3e-9c251607397c",
+                            Id = "3f9ef23b-6a39-4be4-9eb0-4603380253b1",
+                            ConcurrencyStamp = "76ffd704-bb5e-4419-8dd0-470bbe988250",
                             Name = "responsible"
                         });
                 });
@@ -386,19 +388,13 @@ namespace SevsuFacilityStorage.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("HighSocketQuantity")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeEnergizingDevice")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsHighSocket")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsStandartSocket")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("StandartSocketQuantity")
+                    b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -455,7 +451,8 @@ namespace SevsuFacilityStorage.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PremisesDescriptionId");
+                    b.HasIndex("PremisesDescriptionId")
+                        .IsUnique();
 
                     b.ToTable("Equipment");
                 });
@@ -491,9 +488,6 @@ namespace SevsuFacilityStorage.Migrations
                     b.Property<double>("Area")
                         .HasColumnType("float");
 
-                    b.Property<string>("CeilingCovering")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("ElectricitySupplyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -502,9 +496,6 @@ namespace SevsuFacilityStorage.Migrations
 
                     b.Property<double>("Height")
                         .HasColumnType("float");
-
-                    b.Property<Guid?>("NetworkCharacteristicsId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PremisesDescriptionId")
                         .HasColumnType("uniqueidentifier");
@@ -515,8 +506,6 @@ namespace SevsuFacilityStorage.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ElectricitySupplyId");
-
-                    b.HasIndex("NetworkCharacteristicsId");
 
                     b.HasIndex("PremisesDescriptionId")
                         .IsUnique();
@@ -574,6 +563,9 @@ namespace SevsuFacilityStorage.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ElectricitySupplyId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsFHDNetwork")
                         .HasColumnType("bit");
 
@@ -593,6 +585,9 @@ namespace SevsuFacilityStorage.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ElectricitySupplyId")
+                        .IsUnique();
 
                     b.ToTable("NetworkCharacteristics");
                 });
@@ -640,28 +635,13 @@ namespace SevsuFacilityStorage.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AdditionalInfo")
+                    b.Property<string>("Adress")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateOfCurrentInformation")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ExtractFromEGRN")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Floor")
-                        .HasColumnType("int");
-
-                    b.Property<string>("HousingIndex")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Index")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("InnerNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NumberByBTI")
@@ -727,6 +707,9 @@ namespace SevsuFacilityStorage.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("CharacteristicsOfPurchaseAgreement")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -741,7 +724,8 @@ namespace SevsuFacilityStorage.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PremisesDescriptionId");
+                    b.HasIndex("PremisesDescriptionId")
+                        .IsUnique();
 
                     b.ToTable("Softwares");
                 });
@@ -751,9 +735,6 @@ namespace SevsuFacilityStorage.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("Area")
-                        .HasColumnType("float");
 
                     b.Property<string>("Direction")
                         .HasColumnType("nvarchar(max)");
@@ -901,8 +882,8 @@ namespace SevsuFacilityStorage.Migrations
             modelBuilder.Entity("SevsuFacilityStorage.Models.Equipment", b =>
                 {
                     b.HasOne("SevsuFacilityStorage.Models.PremisesDescription", "PremisesDescription")
-                        .WithMany("Equipments")
-                        .HasForeignKey("PremisesDescriptionId")
+                        .WithOne("Equipment")
+                        .HasForeignKey("SevsuFacilityStorage.Models.Equipment", "PremisesDescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -926,10 +907,6 @@ namespace SevsuFacilityStorage.Migrations
                         .WithMany()
                         .HasForeignKey("ElectricitySupplyId");
 
-                    b.HasOne("SevsuFacilityStorage.Models.NetworkCharacteristics", "NetworkCharacteristics")
-                        .WithMany()
-                        .HasForeignKey("NetworkCharacteristicsId");
-
                     b.HasOne("SevsuFacilityStorage.Models.PremisesDescription", "PremisesDescription")
                         .WithOne("GeneralInformation")
                         .HasForeignKey("SevsuFacilityStorage.Models.GeneralInformation", "PremisesDescriptionId")
@@ -937,8 +914,6 @@ namespace SevsuFacilityStorage.Migrations
                         .IsRequired();
 
                     b.Navigation("ElectricitySupply");
-
-                    b.Navigation("NetworkCharacteristics");
 
                     b.Navigation("PremisesDescription");
                 });
@@ -955,6 +930,17 @@ namespace SevsuFacilityStorage.Migrations
                     b.HasOne("SevsuFacilityStorage.Models.GeneralInformation", null)
                         .WithMany("LightingDevices")
                         .HasForeignKey("GeneralInformationId");
+                });
+
+            modelBuilder.Entity("SevsuFacilityStorage.Models.NetworkCharacteristics", b =>
+                {
+                    b.HasOne("SevsuFacilityStorage.Models.ElectricitySupply", "ElectricitySupply")
+                        .WithOne("NetworkCharacteristics")
+                        .HasForeignKey("SevsuFacilityStorage.Models.NetworkCharacteristics", "ElectricitySupplyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ElectricitySupply");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.Person", b =>
@@ -1001,8 +987,8 @@ namespace SevsuFacilityStorage.Migrations
             modelBuilder.Entity("SevsuFacilityStorage.Models.Software", b =>
                 {
                     b.HasOne("SevsuFacilityStorage.Models.PremisesDescription", "PremisesDescription")
-                        .WithMany("Softwares")
-                        .HasForeignKey("PremisesDescriptionId")
+                        .WithOne("Software")
+                        .HasForeignKey("SevsuFacilityStorage.Models.Software", "PremisesDescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1014,6 +1000,11 @@ namespace SevsuFacilityStorage.Migrations
                     b.HasOne("SevsuFacilityStorage.Models.GeneralInformation", null)
                         .WithMany("Windows")
                         .HasForeignKey("GeneralInformationId");
+                });
+
+            modelBuilder.Entity("SevsuFacilityStorage.Models.ElectricitySupply", b =>
+                {
+                    b.Navigation("NetworkCharacteristics");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.EnsuringSecurity", b =>
@@ -1038,7 +1029,7 @@ namespace SevsuFacilityStorage.Migrations
 
                     b.Navigation("EnsuringSecurity");
 
-                    b.Navigation("Equipments");
+                    b.Navigation("Equipment");
 
                     b.Navigation("GeneralInformation");
 
@@ -1048,7 +1039,7 @@ namespace SevsuFacilityStorage.Migrations
 
                     b.Navigation("ResponsibilityForPremises");
 
-                    b.Navigation("Softwares");
+                    b.Navigation("Software");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.RepairStatus", b =>

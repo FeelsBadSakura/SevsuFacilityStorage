@@ -2,8 +2,9 @@
 
 namespace SevsuFacilityStorage.Models
 {
-    public class AdditionalEducationalPremiseDescription : PremisesDescription
+    public class AdditionalEducationalPremiseDescription
     {
+        public Guid Id { get; set; }
         public int AvailableSeatsQuantity { get; set; }
         public int TeacherJobsQuantity { get; set; }
         public bool HasBoard { get; set; }

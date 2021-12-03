@@ -17,6 +17,8 @@ namespace SevsuFacilityStorage.Models
 
         public string FloorCovering { get; set; }
 
+        public string CeilingCovering { get; set; }
+
         public ICollection<Windows> Windows { get; set; }
 
         public ICollection<Door> Doors { get; set; }
@@ -24,6 +26,8 @@ namespace SevsuFacilityStorage.Models
         public ICollection<LightingDevice> LightingDevices { get; set; }
 
         public ElectricitySupply ElectricitySupply { get; set; }
+
+        public NetworkCharacteristics NetworkCharacteristics { get; set; }
 
         public ICollection<Heating> Heatings { get; set; }
 

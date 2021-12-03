@@ -21,8 +21,5 @@ namespace SevsuFacilityStorage.Models
 
         public bool IsInternerAccess { get; set; }
 
-
-        public Guid ElectricitySupplyId { get; set; }
-        public ElectricitySupply ElectricitySupply { get; set; }
     }
 }
