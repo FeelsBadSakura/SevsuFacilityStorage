@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace SevsuFacilityStorage.ViewModels
 {
-    public class PremisesDescriptionMainViewModel
+    public class PremisesDescriptionEditViewModel
     {
+        public Guid Id { get; set; }
         public string InnerNumber { set; get; }
 
         public string NumberByBTI { get; set; }
@@ -14,5 +15,12 @@ namespace SevsuFacilityStorage.ViewModels
         public DateTime DateOfCurrentInformation { get; set; }
 
         public string Adress { get; set; }
+
+        public string Division { get; set; }
+
+        public string Basis { get; set; }
+
+
+
     }
 }

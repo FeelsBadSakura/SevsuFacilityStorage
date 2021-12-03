@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SevsuFacilityStorage.Models;
 using System;
 using System.Collections.Generic;
@@ -7,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace SevsuFacilityStorage.Data
 {
-    public class ApplicationDbContext: DbContext
+    public class ApplicationDbContext: IdentityDbContext
+
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -48,5 +51,19 @@ namespace SevsuFacilityStorage.Data
         public DbSet<Windows> Windows { get; set; }
 
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<IdentityRole>()
+                .HasData(
+                new IdentityRole("admin"),
+                new IdentityRole("user"),
+                new IdentityRole("moderator"),
+                new IdentityRole("responsible")
+                );
+            ;
+        }
+
     }
+
 }
