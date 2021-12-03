@@ -29,11 +29,11 @@ namespace SevsuFacilityStorage.Services
             List<UserViewModel> result = new List<UserViewModel>();
             foreach (var user in allUsers)
             {
-                var userRoles = await _userManager.GetRolesAsync(user);
+                //var userRoles = await _userManager.GetRolesAsync(user);
                 UserViewModel model = new UserViewModel
                 {
                     Name = user.UserName,
-                    Role = userRoles.FirstOrDefault()
+                    //Role = userRoles.FirstOrDefault()
                 };
                 result.Add(model);
             }

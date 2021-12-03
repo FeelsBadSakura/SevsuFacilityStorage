@@ -22,9 +22,7 @@ namespace SevsuFacilityStorage.Service
             PremisesDescription premisesDescription = new PremisesDescription
             {
                 InnerNumber = model.InnerNumber,
-                NumberByBTI = model.NumberByBTI,
-                DateOfCurrentInformation = model.DateOfCurrentInformation,
-                Adress = model.Adress
+
             };
             _premisesDescriptionRepository.CreateRecord(premisesDescription);
         }
@@ -73,9 +71,6 @@ namespace SevsuFacilityStorage.Service
             return new PremisesDescriptionViewModel
             {
                 InnerNumber = premisesDescription.InnerNumber,
-                NumberByBTI = premisesDescription.NumberByBTI,
-                Adress = premisesDescription.Adress,
-                DateOfCurrentInformation = premisesDescription.DateOfCurrentInformation
             };
 
         }

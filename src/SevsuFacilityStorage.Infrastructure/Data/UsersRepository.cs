@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using SevsuFacilityStorage.Abstractions;
 using System;
 using System.Collections.Generic;
