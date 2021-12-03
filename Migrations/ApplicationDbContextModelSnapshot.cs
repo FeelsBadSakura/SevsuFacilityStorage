@@ -44,6 +44,32 @@ namespace SevsuFacilityStorage.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "47646cf2-73c9-4ddd-9d89-03b82f47644e",
+                            ConcurrencyStamp = "6d7e265e-1a15-4bc5-b6ca-b6aa4bad4261",
+                            Name = "admin"
+                        },
+                        new
+                        {
+                            Id = "c63f3c61-0119-4d20-bc1a-951d4ba7efc8",
+                            ConcurrencyStamp = "6c002ad9-db38-4d6d-82da-fa26c126155c",
+                            Name = "user"
+                        },
+                        new
+                        {
+                            Id = "8b12dd33-389b-4e4a-a8ea-57d20fd27204",
+                            ConcurrencyStamp = "d89e25a9-9455-41ff-b090-83be3dd0f68e",
+                            Name = "moderator"
+                        },
+                        new
+                        {
+                            Id = "51b8e6f4-8ff3-42a7-988c-d2da305b403b",
+                            ConcurrencyStamp = "1e323b54-2ed0-4cf5-bf8f-364c31fe1d95",
+                            Name = "responsible"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -522,6 +548,10 @@ namespace SevsuFacilityStorage.Migrations
                     b.Property<DateTime>("DateOfCurrentInformation")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("InnerNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -531,6 +561,8 @@ namespace SevsuFacilityStorage.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PremisesDescriptions");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("PremisesDescription");
                 });
 
             modelBuilder.Entity("SevsuFacilityStorage.Models.RepairStatus", b =>
@@ -640,6 +672,71 @@ namespace SevsuFacilityStorage.Migrations
                     b.HasIndex("GeneralInformationId");
 
                     b.ToTable("Windows");
+                });
+
+            modelBuilder.Entity("SevsuFacilityStorage.Models.AdditionalAdministrativePremiseDescription", b =>
+                {
+                    b.HasBaseType("SevsuFacilityStorage.Models.PremisesDescription");
+
+                    b.Property<int>("AllowedJobsQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FilledfJobsQuantity")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("AdditionalAdministrativePremiseDescription");
+                });
+
+            modelBuilder.Entity("SevsuFacilityStorage.Models.AdditionalEducationalPremiseDescription", b =>
+                {
+                    b.HasBaseType("SevsuFacilityStorage.Models.PremisesDescription");
+
+                    b.Property<int>("AvailableSeatsQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BoardType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("HasBoard")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasStorage")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasTeachingAids")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TeacherJobsQuantity")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("AdditionalEducationalPremiseDescription");
+                });
+
+            modelBuilder.Entity("SevsuFacilityStorage.Models.ComputerClassDescription", b =>
+                {
+                    b.HasBaseType("SevsuFacilityStorage.Models.AdditionalEducationalPremiseDescription");
+
+                    b.Property<int>("PersonalComputersQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("ComputerClassDescription");
+                });
+
+            modelBuilder.Entity("SevsuFacilityStorage.Models.LabClassDescription", b =>
+                {
+                    b.HasBaseType("SevsuFacilityStorage.Models.AdditionalEducationalPremiseDescription");
+
+                    b.Property<string>("Purpose")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("LabClassDescription_Type");
+
+                    b.HasDiscriminator().HasValue("LabClassDescription");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

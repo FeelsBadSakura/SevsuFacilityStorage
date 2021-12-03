@@ -41,6 +41,11 @@ namespace SevsuFacilityStorage.Data
         public DbSet<Person> People { get; set; }
 
         public DbSet<PremisesDescription> PremisesDescriptions { get; set; }
+        public DbSet<AdditionalAdministrativePremiseDescription> AdditionalAdministrativePremiseDescriptions { get; set; }
+        public DbSet<AdditionalEducationalPremiseDescription> AdditionalEducationalPremiseDescriptions { get; set; }
+        public DbSet<ComputerClassDescription> ComputerClasses { get; set; }
+        public DbSet<LabClassDescription> LabClasses { get; set; }
+
 
         public DbSet<RepairStatus> RepairStatuses { get; set; }
 
