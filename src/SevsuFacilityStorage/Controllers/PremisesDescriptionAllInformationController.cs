@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SevsuFacilityStorage.Abstractions;
+using SevsuFacilityStorage.Core.ViewModels;
 using SevsuFacilityStorage.Models;
 using SevsuFacilityStorage.Service;
 using SevsuFacilityStorage.ViewModels;
@@ -27,7 +28,7 @@ namespace SevsuFacilityStorage.Controllers
 
             [EnableCors("AllowLocalhost44321")]
             [HttpPost]
-            public ActionResult<PremisesDescriptionViewModel> CreatePremiaseDescription(PremisesDescriptionViewModel model)
+            public ActionResult<PremisesDescriptionViewModel> CreatePremiaseDescription(CreatePremisesDescriptionViewModel model)
             {
                 _mainService.CreateDescription(model);
                 return Ok();

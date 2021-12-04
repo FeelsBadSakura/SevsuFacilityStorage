@@ -84,6 +84,10 @@ namespace SevsuFacilityStorage.Data
         public IEnumerable<PremisesDescription> GetMainInformation()
         {
             return _context.PremisesDescriptions
+                .Include(PremiasesDescription => PremiasesDescription.ResponsibilityForPremises)
+                .Include(PremiasesDescription => PremiasesDescription.PurposeOfPremises)
+                .Include(PremiasesDescription => PremiasesDescription.AccessibilityForPersonsWithDisabilities)
+                .Include(PremiasesDescription => PremiasesDescription.RepairStatus)
                 .ToList();
         }
 

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SevsuFacilityStorage.Abstractions;
 using SevsuFacilityStorage.Models;
-using SevsuFacilityStorage.Service;
+using SevsuFacilityStorage.Core.Service;
 using SevsuFacilityStorage.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -26,14 +26,14 @@ namespace SevsuFacilityStorage.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IndexViewModel> GetMainInformation(string division, int page = 1)
+        public ActionResult<IndexViewModel> GetMainInformation(string division=null, int page = 1)
         {
             int pageSize = 3;
 
             var list = _mainService.GetMainInformation();
             if (division != null)
             {
-                list = _mainService.FilteringMainInformation(list,division );
+                //list = _mainService.FilteringMainInformation(list,division );
             }
             var count = list.Count();
             list = list.Skip((page - 1) * pageSize).Take(pageSize).ToList();
