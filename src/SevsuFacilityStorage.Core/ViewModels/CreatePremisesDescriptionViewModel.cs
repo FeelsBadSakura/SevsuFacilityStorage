@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -76,15 +77,20 @@ namespace SevsuFacilityStorage.Core.ViewModels
 
         public ICollection<HeatingViewModel> HeatingViewModels { get; set; }
 
-        public AdditionalAdministrativePremiseDescriptionViewModel?
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public AdditionalAdministrativePremiseDescriptionViewModel
             AdditionalAdministrativePremiseDescriptionViewModel { get; set; }
 
-        public AdditionalEducationalPremiseDescriptionViewModel? 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public AdditionalEducationalPremiseDescriptionViewModel
             AdditionalEducationalPremiseDescriptionViewModel { get; set; }
 
-        public ComputerClassDescriptionViewModel? ComputerClassDescriptionViewModel { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ComputerClassDescriptionViewModel ComputerClassDescriptionViewModel { get; set; }
 
-        public LabClassDescriptionViewModel? LabClassDescriptionViewModel { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public LabClassDescriptionViewModel LabClassDescriptionViewModel { get; set; }
 
 
         public ICollection<EquipmentViewModel> EquipmentViewModels { get; set; }

@@ -11,5 +11,8 @@ namespace SevsuFacilityStorage.Models
         public string BoardType { get; set; }
         public bool HasStorage { get; set; }
         public bool HasTeachingAids { get; set; }
+
+        public Guid PremisesDescriptionId { get; set; }
+        public PremisesDescription PremisesDescription { get; set; }
     }
 }

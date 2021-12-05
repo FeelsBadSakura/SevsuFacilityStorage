@@ -1,4 +1,5 @@
-﻿using SevsuFacilityStorage.Models;
+﻿using SevsuFacilityStorage.Core.ViewModels;
+using SevsuFacilityStorage.Models;
 using SevsuFacilityStorage.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace SevsuFacilityStorage.Abstractions
 
         public IEnumerable<PremisesDescription> GetAllDescriptions();
 
-        public IEnumerable<PremisesDescription> GetMainInformation();
+        public IEnumerable<PremisesDescription> GetMainInformation(FiltersViewModel filtersViewModel, int page, int pageSize);
 
         public PremisesDescription GetDescriptionByNumber(string number);
 

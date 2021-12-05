@@ -22,6 +22,7 @@ namespace SevsuFacilityStorage.Core.Service
         public void CreateDescription(CreatePremisesDescriptionViewModel model)
         {
 
+
             ICollection<Windows> windows = new List<Windows>();
             foreach (var window in model.WindowViewModels)
             {
@@ -165,6 +166,50 @@ namespace SevsuFacilityStorage.Core.Service
                     PlannedEndDate = model.PlannedEndRepairDate
                 }
             };
+            
+            if (model.AdditionalAdministrativePremiseDescriptionViewModel != null)
+            {
+                premisesDescription.AdditionalAdministrativePremiseDescription =
+                    new AdditionalAdministrativePremiseDescription
+                    {
+                        FilledfJobsQuantity = model.AdditionalAdministrativePremiseDescriptionViewModel.FilledfJobsQuantity,
+                        AllowedJobsQuantity = model.AdditionalAdministrativePremiseDescriptionViewModel.AllowedJobsQuantity
+                    };
+            }
+
+            if (model.AdditionalEducationalPremiseDescriptionViewModel != null)
+            {
+
+                premisesDescription.AdditionalEducationalPremiseDescription =
+                    new AdditionalEducationalPremiseDescription
+                    {
+                        AvailableSeatsQuantity = model.AdditionalEducationalPremiseDescriptionViewModel.AvailableSeatsQuantity,
+                        BoardType = model.AdditionalEducationalPremiseDescriptionViewModel.BoardType,
+                        HasBoard = model.AdditionalEducationalPremiseDescriptionViewModel.HasBoard,
+                        HasStorage = model.AdditionalEducationalPremiseDescriptionViewModel.HasStorage,
+                        HasTeachingAids = model.AdditionalEducationalPremiseDescriptionViewModel.HasTeachingAids,
+                        TeacherJobsQuantity = model.AdditionalEducationalPremiseDescriptionViewModel.TeacherJobsQuantity
+                    };
+            }
+
+            if (model.ComputerClassDescriptionViewModel != null)
+            {
+                premisesDescription.ComputerClassDescription = new ComputerClassDescription
+                {
+                    PersonalComputersQuantity = model.ComputerClassDescriptionViewModel.PersonalComputersQuantity,
+                    Type = model.ComputerClassDescriptionViewModel.Type
+                };
+            }
+
+            if (model.LabClassDescriptionViewModel!= null)
+            {
+                premisesDescription.LabClassDescription = new LabClassDescription
+                {
+                    Purpose = model.LabClassDescriptionViewModel.Purpose,
+                    Type = model.ComputerClassDescriptionViewModel.Type
+                };
+            }
+
             _premisesDescriptionRepository.CreateRecord(premisesDescription);
         }
 
@@ -185,21 +230,39 @@ namespace SevsuFacilityStorage.Core.Service
             _premisesDescriptionRepository.EditRecord(premisesDescription);
         }
 
-        public IEnumerable<PremisesDescriptionMainViewModel> GetMainInformation()
+        public IEnumerable<PremisesDescriptionMainViewModel> GetMainInformation(FiltersViewModel filtersViewModel,
+            int page, int pageSize)
         {
-            return _premisesDescriptionRepository.GetMainInformation()
-                .Select(information => new PremisesDescriptionMainViewModel
-                {
-                    InnerNumber = information.InnerNumber,
-                    HousingIndex = information.HousingIndex,
-                    Division = information.ResponsibilityForPremises.Division,
-                    Type = information.PurposeOfPremises.Type,
-                    Sort = information.PurposeOfPremises.Sort,
-                    
 
-                    Availability = information.AccessibilityForPersonsWithDisabilities.Availability,
-                    UnderRepair = information.RepairStatus.UnderRepair
-                });
+            var mainInformation = _premisesDescriptionRepository.GetMainInformation(filtersViewModel,page,pageSize);
+            List<PremisesDescriptionMainViewModel> model = new List<PremisesDescriptionMainViewModel>();
+            foreach (var item in mainInformation)
+            {
+                var premiseDescriptionViewModel = new PremisesDescriptionMainViewModel
+                {
+                    InnerNumber = item.InnerNumber,
+                    HousingIndex = item.HousingIndex,
+                    Division = item.ResponsibilityForPremises.Division,
+                    Type = item.PurposeOfPremises.Type,
+                    Sort = item.PurposeOfPremises.Sort,
+
+                    
+                    Availability = item.AccessibilityForPersonsWithDisabilities.Availability,
+                    UnderRepair = item.RepairStatus.UnderRepair
+                };
+                if (item.AdditionalEducationalPremiseDescription != null)
+                {
+                    premiseDescriptionViewModel.NumberOfSeats = item.AdditionalEducationalPremiseDescription.AvailableSeatsQuantity;
+                    premiseDescriptionViewModel.BoardType = item.AdditionalEducationalPremiseDescription.BoardType;
+                    premiseDescriptionViewModel.IsTSO = item.AdditionalEducationalPremiseDescription.HasTeachingAids;
+                };
+                if (item.AdditionalAdministrativePremiseDescription != null)
+                {
+                    premiseDescriptionViewModel.NumberOfSeats = item.AdditionalAdministrativePremiseDescription.AllowedJobsQuantity;
+                };
+                model.Add(premiseDescriptionViewModel);
+            };    
+            return model;
         }
 
         public IEnumerable<PremisesDescriptionMainViewModel> FilteringMainInformation(

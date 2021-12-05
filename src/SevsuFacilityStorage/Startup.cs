@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using SevsuFacilityStorage.Abstractions;
 using SevsuFacilityStorage.Data;
-using SevsuFacilityStorage.Service;
+using SevsuFacilityStorage.Core.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;

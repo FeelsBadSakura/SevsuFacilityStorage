@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SevsuFacilityStorage.Abstractions;
 using SevsuFacilityStorage.Core.ViewModels;
 using SevsuFacilityStorage.Models;
-using SevsuFacilityStorage.Service;
+using SevsuFacilityStorage.Core.Service;
 using SevsuFacilityStorage.ViewModels;
 using System;
 using System.Collections.Generic;

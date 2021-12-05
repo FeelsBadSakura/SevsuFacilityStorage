@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SevsuFacilityStorage.Abstractions;
+using SevsuFacilityStorage.Core.Models;
+using SevsuFacilityStorage.Core.ViewModels;
 using SevsuFacilityStorage.Models;
 using SevsuFacilityStorage.ViewModels;
 using System;
@@ -81,13 +83,28 @@ namespace SevsuFacilityStorage.Data
                 .FirstOrDefault(model => model.InnerNumber == number);
         }
 
-        public IEnumerable<PremisesDescription> GetMainInformation()
+        public IEnumerable<PremisesDescription> GetMainInformation(FiltersViewModel filtersViewModel, int page, int pageSize)
         {
             return _context.PremisesDescriptions
                 .Include(PremiasesDescription => PremiasesDescription.ResponsibilityForPremises)
                 .Include(PremiasesDescription => PremiasesDescription.PurposeOfPremises)
                 .Include(PremiasesDescription => PremiasesDescription.AccessibilityForPersonsWithDisabilities)
                 .Include(PremiasesDescription => PremiasesDescription.RepairStatus)
+                .Include(PremiasesDescription => PremiasesDescription.AdditionalAdministrativePremiseDescription)
+                .Include(PremiasesDescription => PremiasesDescription.AdditionalEducationalPremiseDescription)
+                .Where(model => 
+                (filtersViewModel.HousingIndex == null ? true : model.HousingIndex == filtersViewModel.HousingIndex) &&
+                (filtersViewModel.Type == null ? true : model.PurposeOfPremises.Type == filtersViewModel.Type) &&
+                (filtersViewModel.Sort == null ? true : model.PurposeOfPremises.Sort == filtersViewModel.Sort) &&
+                (filtersViewModel.Division == null ? true : model.ResponsibilityForPremises.Division == filtersViewModel.Division) &&
+                (filtersViewModel.NumberOfSeats == null ? true : model.AdditionalEducationalPremiseDescription.AvailableSeatsQuantity < filtersViewModel.NumberOfSeats) &&
+                (filtersViewModel.NumberOfSeats == null ? true : model.AdditionalAdministrativePremiseDescription.AllowedJobsQuantity < filtersViewModel.NumberOfSeats) &&
+                (filtersViewModel.BoardType == null ? true : model.AdditionalEducationalPremiseDescription.BoardType == filtersViewModel.BoardType) &&
+                (filtersViewModel.IsTSO == null ? true : model.AdditionalEducationalPremiseDescription.HasTeachingAids == filtersViewModel.IsTSO) &&
+                (filtersViewModel.Availability == null ? true : model.AccessibilityForPersonsWithDisabilities.Availability == filtersViewModel.Availability) &&
+                (filtersViewModel.UnderRepair == null ? true : model.RepairStatus.UnderRepair == filtersViewModel.UnderRepair))
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToList();
         }
 

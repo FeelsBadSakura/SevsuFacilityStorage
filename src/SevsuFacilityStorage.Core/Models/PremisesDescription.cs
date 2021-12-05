@@ -44,5 +44,14 @@ namespace SevsuFacilityStorage.Models
 
         public PurposeOfPremises PurposeOfPremises { get; set; }
 
+
+
+        public AdditionalAdministrativePremiseDescription AdditionalAdministrativePremiseDescription { get; set; }
+
+        public AdditionalEducationalPremiseDescription AdditionalEducationalPremiseDescription { get; set; }
+
+        public ComputerClassDescription ComputerClassDescription { get; set; }
+
+        public LabClassDescription LabClassDescription { get; set; }
     }
 }
