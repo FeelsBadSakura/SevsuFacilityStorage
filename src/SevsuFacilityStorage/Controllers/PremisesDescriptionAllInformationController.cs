@@ -35,25 +35,15 @@ namespace SevsuFacilityStorage.Controllers
             }
 
             [HttpGet]
-            public PremisesDescriptionViewModel GetPremise(string number)
+            public PremisesDescriptionViewModel GetPremise(string number, DateTime? dateOfCurrentInformation = null)
             {
-                return _mainService.GetDescriptionByNumber(number);
+                if (dateOfCurrentInformation == null)
+                {
+                    dateOfCurrentInformation = DateTime.UtcNow;
+                }
+                return _mainService.GetDescriptionByNumber(number, (DateTime)dateOfCurrentInformation);
             }
 
-
-            [HttpGet]
-            public ActionResult<PremisesDescriptionEditViewModel> EditPremise(string number)
-            {
-                return _mainService.GetEditDescriptionByNumber(number);
-            }
-
-
-            [HttpPost]
-            public ActionResult<PremisesDescriptionEditViewModel> EditPremise(PremisesDescriptionEditViewModel model)
-            {
-                _mainService.EditDescription(model);
-                return Ok();
-            }
 
 
             [HttpPost]

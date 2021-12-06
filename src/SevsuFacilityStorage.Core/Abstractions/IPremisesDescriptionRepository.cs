@@ -14,13 +14,10 @@ namespace SevsuFacilityStorage.Abstractions
 
         public void DeleteRecord(string number);
 
-        public void EditRecord(PremisesDescription premisesDescription);
-
-        public IEnumerable<PremisesDescription> GetAllDescriptions();
 
         public IEnumerable<PremisesDescription> GetMainInformation(FiltersViewModel filtersViewModel, int page, int pageSize);
 
-        public PremisesDescription GetDescriptionByNumber(string number);
+        public PremisesDescription GetDescriptionByNumber(string number, DateTime dateOfCurrentInformation);
 
     }
 }

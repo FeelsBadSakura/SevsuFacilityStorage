@@ -218,18 +218,6 @@ namespace SevsuFacilityStorage.Core.Service
             _premisesDescriptionRepository.DeleteRecord(number);
         }
 
-        public void EditDescription(PremisesDescriptionEditViewModel model)
-        {
-            PremisesDescription premisesDescription = new PremisesDescription
-            {
-                Id = model.Id,
-                InnerNumber = model.InnerNumber,
-                NumberByBTI = model.NumberByBTI,
-                DateOfCurrentInformation = model.DateOfCurrentInformation,
-            };
-            _premisesDescriptionRepository.EditRecord(premisesDescription);
-        }
-
         public IEnumerable<PremisesDescriptionMainViewModel> GetMainInformation(FiltersViewModel filtersViewModel,
             int page, int pageSize)
         {
@@ -240,13 +228,12 @@ namespace SevsuFacilityStorage.Core.Service
             {
                 var premiseDescriptionViewModel = new PremisesDescriptionMainViewModel
                 {
+
                     InnerNumber = item.InnerNumber,
                     HousingIndex = item.HousingIndex,
                     Division = item.ResponsibilityForPremises.Division,
                     Type = item.PurposeOfPremises.Type,
-                    Sort = item.PurposeOfPremises.Sort,
-
-                    
+                    Sort = item.PurposeOfPremises.Sort, 
                     Availability = item.AccessibilityForPersonsWithDisabilities.Availability,
                     UnderRepair = item.RepairStatus.UnderRepair
                 };
@@ -265,37 +252,169 @@ namespace SevsuFacilityStorage.Core.Service
             return model;
         }
 
-        public IEnumerable<PremisesDescriptionMainViewModel> FilteringMainInformation(
-            IEnumerable<PremisesDescriptionMainViewModel> toFilter, string division)
+
+        public PremisesDescriptionViewModel GetDescriptionByNumber(string number, DateTime dateOfCurrentInformation)
         {
-            return toFilter.Where(record => record.Division == division);
-        }
+            var premiseDescription = _premisesDescriptionRepository.GetDescriptionByNumber(number, dateOfCurrentInformation);
 
-
-        public PremisesDescriptionViewModel GetDescriptionByNumber(string number)
-        {
-            var premisesDescription = _premisesDescriptionRepository.GetDescriptionByNumber(number);
-
-            return new PremisesDescriptionViewModel
+            ICollection<WindowViewModel> windows = new List<WindowViewModel>();
+            foreach (var window in premiseDescription.GeneralInformation.Windows)
             {
-                InnerNumber = premisesDescription.InnerNumber,
+                windows.Add(new WindowViewModel
+                {
+                    Type = window.Type,
+                    Quantity = window.Quantity,
+                    Direction = window.Direction,
+                    Obstacles = window.Obstacles,
+                    Area = window.Area,
+                    Grids = window.Grids
+                });
+            }
+
+            ICollection<DoorViewModel> doors = new List<DoorViewModel>();
+            foreach (var door in premiseDescription.GeneralInformation.Doors)
+            {
+                doors.Add(new DoorViewModel
+                {
+                    Type = door.Type,
+                    Quantity = door.Quantity,
+                    IsElectronicLock = door.IsElectronicLock
+                });
+            }
+
+            ICollection<LightningDeviceViewModel> lightingDevices = new List<LightningDeviceViewModel>();
+            foreach (var lightingDevice in premiseDescription.GeneralInformation.LightingDevices)
+            {
+                lightingDevices.Add(new LightningDeviceViewModel
+                {
+                    Type = lightingDevice.Type,
+                    Quantity = lightingDevice.Quantity
+                });
+            }
+
+            ICollection<HeatingViewModel> heatings = new List<HeatingViewModel>();
+            foreach (var heating in premiseDescription.GeneralInformation.Heatings)
+            {
+                heatings.Add(new HeatingViewModel
+                {
+                    Type = heating.Type,
+                    Quantity = heating.Quantity
+                });
+            }
+
+            ICollection<EquipmentViewModel> equipments = new List<EquipmentViewModel>();
+            foreach (var equipment in premiseDescription.Equipments)
+            {
+                equipments.Add(new EquipmentViewModel
+                {
+                    Type = equipment.Type,
+                    Quantity = equipment.Quantity,
+                    Name = equipment.Name,
+                    Description = equipment.Description,
+                    InventoryNumber = equipment.InventoryNumber
+                });
+            }
+
+            ICollection<SoftwareViewModel> softwares = new List<SoftwareViewModel>();
+            foreach (var software in premiseDescription.Softwares)
+            {
+                softwares.Add(new SoftwareViewModel
+                {
+                    Name = software.Name,
+                    Description = software.Description,
+                    LicenseType = software.LicenseType
+                });
+            }
+
+
+            var premiseDescriptionViewModel = new PremisesDescriptionViewModel
+            {
+                InnerNumber = premiseDescription.InnerNumber,
+                NumberByBTI = premiseDescription.NumberByBTI,
+                DateOfCurrentInformation = premiseDescription.DateOfCurrentInformation,
+                HousingIndex = premiseDescription.HousingIndex,
+                ExtractFromEGRN = premiseDescription.ExtractFromEGRN,
+                Index = premiseDescription.Index,
+                Floor = premiseDescription.Floor,
+                AdditionalInfo = premiseDescription.AdditionalInfo,
+                Name = premiseDescription.Name,
+                Division = premiseDescription.ResponsibilityForPremises.Division,
+                Basis = premiseDescription.ResponsibilityForPremises.Basis,
+                Type = premiseDescription.PurposeOfPremises.Type,
+                Sort = premiseDescription.PurposeOfPremises.Sort,
+                Area = premiseDescription.GeneralInformation.Area,
+                Height = premiseDescription.GeneralInformation.Height,
+                WallCovering = premiseDescription.GeneralInformation.WallCovering,
+                FloorCovering = premiseDescription.GeneralInformation.FloorCovering,
+                CeilingCovering = premiseDescription.GeneralInformation.CeilingCovering,
+                WindowViewModels = windows,
+                DoorViewModels = doors,
+                LightningDeviceViewModels = lightingDevices,
+                IsStandartSocket = premiseDescription.GeneralInformation.ElectricitySupply.IsStandartSocket,
+                StandartSocketQuantity = premiseDescription.GeneralInformation.ElectricitySupply.StandartSocketQuantity,
+                IsHighSocket = premiseDescription.GeneralInformation.ElectricitySupply.IsHighSocket,
+                IsDeEnergizingDevice = premiseDescription.GeneralInformation.ElectricitySupply.IsDeEnergizingDevice,
+                IsRJ45Socket = premiseDescription.GeneralInformation.NetworkCharacteristics.IsRJ45Socket,
+                QuantityRJ45Socket = premiseDescription.GeneralInformation.NetworkCharacteristics.Quantity,
+                SocketsOccupied = premiseDescription.GeneralInformation.NetworkCharacteristics.SocketsOccupied,
+                IsLVC = premiseDescription.GeneralInformation.NetworkCharacteristics.IsLVC,
+                IsFHDNetwork = premiseDescription.GeneralInformation.NetworkCharacteristics.IsFHDNetwork,
+                IsInternerAccess = premiseDescription.GeneralInformation.NetworkCharacteristics.IsInternerAccess,
+                HeatingViewModels = heatings,
+                EquipmentViewModels = equipments,
+                SoftwareViewModels = softwares,
+
+                Availability = premiseDescription.AccessibilityForPersonsWithDisabilities.Availability,
+                AvailabilityCharacteristics = premiseDescription.AccessibilityForPersonsWithDisabilities.AvailabilityCharacteristics,
+                UnderRepair = premiseDescription.RepairStatus.UnderRepair,
+                StartRepairDate = premiseDescription.RepairStatus.StartDate,
+                PlannedEndRepairDate = premiseDescription.RepairStatus.PlannedEndDate,
+
             };
 
-        }
 
-        
-        public PremisesDescriptionEditViewModel GetEditDescriptionByNumber(string number)
-        {
-            var premisesDescription = _premisesDescriptionRepository.GetDescriptionByNumber(number);
-
-            return new PremisesDescriptionEditViewModel
+            if (premiseDescription.AdditionalEducationalPremiseDescription != null)
             {
-                Id = premisesDescription.Id,
-                InnerNumber = premisesDescription.InnerNumber,
-                NumberByBTI = premisesDescription.NumberByBTI,
-                DateOfCurrentInformation = premisesDescription.DateOfCurrentInformation
+                premiseDescriptionViewModel.AdditionalEducationalPremiseDescriptionViewModel =
+                    new AdditionalEducationalPremiseDescriptionViewModel
+                    {
+                        AvailableSeatsQuantity = premiseDescription.AdditionalEducationalPremiseDescription.AvailableSeatsQuantity,
+                        BoardType = premiseDescription.AdditionalEducationalPremiseDescription.BoardType,
+                        HasBoard = premiseDescription.AdditionalEducationalPremiseDescription.HasBoard,
+                        HasStorage = premiseDescription.AdditionalEducationalPremiseDescription.HasStorage,
+                        HasTeachingAids = premiseDescription.AdditionalEducationalPremiseDescription.HasTeachingAids,
+                        TeacherJobsQuantity = premiseDescription.AdditionalEducationalPremiseDescription.TeacherJobsQuantity
+                    };
             };
+            if (premiseDescription.AdditionalAdministrativePremiseDescription != null)
+            {
+                premiseDescriptionViewModel.AdditionalAdministrativePremiseDescriptionViewModel =
+                    new AdditionalAdministrativePremiseDescriptionViewModel
+                    {
+                        FilledfJobsQuantity = premiseDescription.AdditionalAdministrativePremiseDescription.FilledfJobsQuantity,
+                        AllowedJobsQuantity = premiseDescription.AdditionalAdministrativePremiseDescription.AllowedJobsQuantity
+                    };
+            };
+            if (premiseDescription.ComputerClassDescription != null)
+            {
+                premiseDescriptionViewModel.ComputerClassDescriptionViewModel =
+                    new ComputerClassDescriptionViewModel
+                    {
+                        PersonalComputersQuantity = premiseDescription.ComputerClassDescription.PersonalComputersQuantity,
+                        Type = premiseDescription.ComputerClassDescription.Type
+                    };
+            }
+            if (premiseDescription.LabClassDescription != null)
+            {
+                premiseDescriptionViewModel.LabClassDescriptionViewModel =
+                    new LabClassDescriptionViewModel
+                    {
+                        Purpose = premiseDescription.LabClassDescription.Purpose,
+                        Type = premiseDescription.LabClassDescription.Type
+                    };
+            }
 
+                return premiseDescriptionViewModel;
         }
 
     }

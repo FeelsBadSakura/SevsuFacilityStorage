@@ -28,18 +28,14 @@ namespace SevsuFacilityStorage.Data
 
         public void DeleteRecord(string number)
         {
-            _context.PremisesDescriptions.Remove(
-                _context.PremisesDescriptions.FirstOrDefault(PremisesDescription => PremisesDescription.InnerNumber == number));
+            _context.PremisesDescriptions.RemoveRange(
+                _context.PremisesDescriptions
+                .Where(PremisesDescription => PremisesDescription.InnerNumber == number));
             _context.SaveChanges();
         }
 
-        public void EditRecord(PremisesDescription premisesDescription)
-        {
-            _context.PremisesDescriptions.Update(premisesDescription);
-            _context.SaveChanges();
-        }
 
-        public IEnumerable<PremisesDescription> GetAllDescriptions()
+        public PremisesDescription GetDescriptionByNumber(string number, DateTime dateOfCurrentInformation)
         {
             return _context.PremisesDescriptions
                 .Include(PremiasesDescription => PremiasesDescription.AccessibilityForPersonsWithDisabilities)
@@ -53,46 +49,34 @@ namespace SevsuFacilityStorage.Data
                     .ThenInclude(GeneralInformation => GeneralInformation.Doors)
                 .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
                     .ThenInclude(GeneralInformation => GeneralInformation.Windows)
+                .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
+                    .ThenInclude(GeneralInformation => GeneralInformation.NetworkCharacteristics)
+                .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
+                    .ThenInclude(GeneralInformation => GeneralInformation.ElectricitySupply)
                 .Include(PremiasesDescription => PremiasesDescription.RepairStatus)
                     .ThenInclude(RepairStatus => RepairStatus.Person)
                 .Include(PremiasesDescription => PremiasesDescription.Softwares)
                 .Include(PremiasesDescription => PremiasesDescription.ResponsibilityForPremises)
                     .ThenInclude(ResponsibilityForPremises => ResponsibilityForPremises.ResponsiblePersons)
-                .ToList();
-        }
-
-        public PremisesDescription GetDescriptionByNumber(string number)
-        {
-            return _context.PremisesDescriptions
-                .Include(PremiasesDescription => PremiasesDescription.AccessibilityForPersonsWithDisabilities)
-                .Include(PremiasesDescription => PremiasesDescription.EnsuringSecurity)
-                .Include(PremiasesDescription => PremiasesDescription.Equipments)
-                .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
-                    .ThenInclude(GeneralInformation => GeneralInformation.Heatings)
-                .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
-                    .ThenInclude(GeneralInformation => GeneralInformation.LightingDevices)
-                .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
-                    .ThenInclude(GeneralInformation => GeneralInformation.Doors)
-                .Include(PremiasesDescription => PremiasesDescription.GeneralInformation)
-                    .ThenInclude(GeneralInformation => GeneralInformation.Windows)
-                .Include(PremiasesDescription => PremiasesDescription.RepairStatus)
-                    .ThenInclude(RepairStatus => RepairStatus.Person)
-                .Include(PremiasesDescription => PremiasesDescription.Softwares)
-                .Include(PremiasesDescription => PremiasesDescription.ResponsibilityForPremises)
-                    .ThenInclude(ResponsibilityForPremises => ResponsibilityForPremises.ResponsiblePersons)
-                .FirstOrDefault(model => model.InnerNumber == number);
+                .Include(PremiasesDescription => PremiasesDescription.PurposeOfPremises)
+                .Include(PremiasesDescription => PremiasesDescription.AdditionalAdministrativePremiseDescription)
+                .Include(PremiasesDescription => PremiasesDescription.AdditionalEducationalPremiseDescription)
+                .Include(PremiasesDescription => PremiasesDescription.ComputerClassDescription)
+                .Include(PremiasesDescription => PremiasesDescription.LabClassDescription)
+                .OrderByDescending(PremiasesDescription => PremiasesDescription.DateOfCurrentInformation)
+                .FirstOrDefault(model => model.InnerNumber == number && model.DateOfCurrentInformation < dateOfCurrentInformation);
         }
 
         public IEnumerable<PremisesDescription> GetMainInformation(FiltersViewModel filtersViewModel, int page, int pageSize)
         {
-            return _context.PremisesDescriptions
+             return _context.PremisesDescriptions
                 .Include(PremiasesDescription => PremiasesDescription.ResponsibilityForPremises)
                 .Include(PremiasesDescription => PremiasesDescription.PurposeOfPremises)
                 .Include(PremiasesDescription => PremiasesDescription.AccessibilityForPersonsWithDisabilities)
                 .Include(PremiasesDescription => PremiasesDescription.RepairStatus)
                 .Include(PremiasesDescription => PremiasesDescription.AdditionalAdministrativePremiseDescription)
                 .Include(PremiasesDescription => PremiasesDescription.AdditionalEducationalPremiseDescription)
-                .Where(model => 
+                .Where(model =>
                 (filtersViewModel.HousingIndex == null ? true : model.HousingIndex == filtersViewModel.HousingIndex) &&
                 (filtersViewModel.Type == null ? true : model.PurposeOfPremises.Type == filtersViewModel.Type) &&
                 (filtersViewModel.Sort == null ? true : model.PurposeOfPremises.Sort == filtersViewModel.Sort) &&
@@ -103,6 +87,11 @@ namespace SevsuFacilityStorage.Data
                 (filtersViewModel.IsTSO == null ? true : model.AdditionalEducationalPremiseDescription.HasTeachingAids == filtersViewModel.IsTSO) &&
                 (filtersViewModel.Availability == null ? true : model.AccessibilityForPersonsWithDisabilities.Availability == filtersViewModel.Availability) &&
                 (filtersViewModel.UnderRepair == null ? true : model.RepairStatus.UnderRepair == filtersViewModel.UnderRepair))
+                .AsEnumerable()
+                .GroupBy(PremiasesDescription => PremiasesDescription.InnerNumber)
+                .Select(m => 
+                    m.OrderByDescending(PremiasesDescription => PremiasesDescription.DateOfCurrentInformation)
+                    .FirstOrDefault())
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
